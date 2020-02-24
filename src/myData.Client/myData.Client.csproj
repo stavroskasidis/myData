@@ -3,13 +3,10 @@
   <PropertyGroup>
     <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
   </PropertyGroup>
-
-  <Target Name="PreBuild" BeforeTargets="CoreBuild">
-    <Exec Command="$(ProjectDir)..\..\scripts\generate-xsd-classes.bat" />
-  </Target>
-
+  
   <ItemGroup>
     <Reference Include="System.Net.Http" Condition="'$(TargetFramework)' == 'net45'" />
+    <Reference Include="System.Web"  Condition="'$(TargetFramework)' == 'net45'" />
   </ItemGroup>
   
 </Project>

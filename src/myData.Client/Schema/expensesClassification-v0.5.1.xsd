@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 sp1 (http://www.altova.com) by End User (free.org) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ecls="https://www.aade.gr/myDATA/expensesClassificaton/v1.0" xmlns:inv="http://www.aade.gr/myDATA/invoice/v1.0" targetNamespace="https://www.aade.gr/myDATA/expensesClassificaton/v1.0" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:element name="ExpensesClassificationsDoc">
+    <xs:annotation>
+      <xs:documentation>Χαρατηρισμοί Εξόδων Πρότυπων Παραστατικών ΑΑΔΕ</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence maxOccurs="unbounded">
+        <xs:element name="expensesInvoiceClassification" type="ecls:InvoiceExpensesClassificationType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="InvoiceExpensesClassificationType">
+    <xs:sequence>
+      <xs:element name="mark" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Μοναδικός Αριθμός Καταχώρησης Παραστατικού</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="classificationReceipt" type="xs:long" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Αποδεικτικό Λήψης Χαρακτηρισμού Εξόδων. Συμπληρώνεται από την Υπηρεσία</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="invoicesExpensesClassificationDetails" type="ecls:InvoicesExpensesClassificationDetailType" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="InvoicesExpensesClassificationDetailType">
+    <xs:sequence>
+      <xs:element name="lineNumber" type="xs:int"/>
+      <xs:element name="expensesClassificationDetailData" type="ecls:ExpensesClassificationType">
+        <xs:annotation>
+          <xs:documentation>Λίστα Χαρακτηρισμών Εξόδων</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ExpensesClassificationType">
+    <xs:sequence>
+      <xs:element name="classificationType" type="ecls:ExpensesClassificationValueType">
+        <xs:annotation>
+          <xs:documentation>Είδος Χαρακτηρισμού</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="classificationCategory" type="ecls:ClassificationCategoryType">
+        <xs:annotation>
+          <xs:documentation>Κατηγορία Χαρακτηρισμού</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="amount" type="ecls:AmountType">
+        <xs:annotation>
+          <xs:documentation>Ποσό Χαρακτηρισμού</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="id" type="xs:byte" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Μοναδικός Αριθμός Χαρακτηρισμού</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="ExpensesClassificationValueType">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="201"/>
+      <xs:maxInclusive value="210"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ClassificationCategoryType">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="4"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="AmountType">
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="5"/>
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

@@ -3,7 +3,5 @@
 ## To update the schema
 
 1. Empty the "Schema" folder.
-2. Add the .xsd files with the latest versions in "Schema" folder
-3. Rebuild the project.
-
-Classes are generated using "/scripts/generate-xsd-classes.bat"
+2. Add the lastest .xsd files in "Schema" folder
+3. Execute the script "/scripts/generate-xsd-classes.bat"
