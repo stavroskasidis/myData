@@ -49,40 +49,117 @@ namespace myData.Client
             {
                 response.EnsureSuccessStatusCode();
                 var responseDeserializer = new XmlSerializer(typeof(RequestedInvoicesDoc));
-                var responseDoc = (RequestedInvoicesDoc)responseDeserializer.Deserialize(await response.Content.ReadAsStreamAsync());
-
-                return responseDoc;
+                var responseStr = await response.Content.ReadAsStringAsync();
+                try
+                {
+                    var responseDoc = (RequestedInvoicesDoc)responseDeserializer.Deserialize(new StringReader(responseStr));
+                    return responseDoc;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Failed to parse response: " + responseStr, ex);
+                }
             }
         }
 
         public RequestedInvoicesDoc RequestIssuerInvoices(string mark, string nextPartitionKey = null, string nextRowKey = null)
         {
-            throw new NotImplementedException();
+            return RequestIssuerInvoicesAsync(mark, nextPartitionKey, nextRowKey).GetAwaiter().GetResult();
         }
 
-        public Task<RequestedInvoicesDoc> RequestIssuerInvoicesAsync(string mark, string nextPartitionKey = null, string nextRowKey = null)
+        public async Task<RequestedInvoicesDoc> RequestIssuerInvoicesAsync(string mark, string nextPartitionKey = null, string nextRowKey = null)
         {
-            throw new NotImplementedException();
+            var queryString = HttpUtility.ParseQueryString(string.Empty);
+            queryString["mark"] = mark;
+            if (!string.IsNullOrWhiteSpace(nextPartitionKey))
+            {
+                queryString["nextPartitionKey"] = nextPartitionKey;
+            }
+            if (!string.IsNullOrWhiteSpace(nextRowKey))
+            {
+                queryString["nextRowKey"] = nextRowKey;
+            }
+
+            var request = CreateHttpRequestMessage("RequestIssuerInvoices?" + queryString, HttpMethod.Get);
+            using (var response = await httpClient.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+                var responseDeserializer = new XmlSerializer(typeof(RequestedInvoicesDoc));
+                var responseStr = await response.Content.ReadAsStringAsync();
+                try
+                {
+                    var responseDoc = (RequestedInvoicesDoc)responseDeserializer.Deserialize(new StringReader(responseStr));
+                    return responseDoc;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Failed to parse response: " + responseStr, ex);
+                }
+            }
         }
 
         public ResponseDoc SendExpensesClassification(ExpensesClassificationsDoc expensesClassificationsDoc)
         {
-            throw new NotImplementedException();
+            return SendExpensesClassificationAsync(expensesClassificationsDoc).GetAwaiter().GetResult();
         }
 
-        public Task<ResponseDoc> SendExpensesClassificationAsync(ExpensesClassificationsDoc expensesClassificationsDoc)
+        public async Task<ResponseDoc> SendExpensesClassificationAsync(ExpensesClassificationsDoc expensesClassificationsDoc)
         {
-            throw new NotImplementedException();
+            var requestSerializer = new XmlSerializer(typeof(ExpensesClassificationsDoc));
+            var responseDeserializer = new XmlSerializer(typeof(ResponseDoc));
+            using (var stream = new MemoryStream())
+            {
+                requestSerializer.Serialize(stream, expensesClassificationsDoc);
+                var httpContent = new ByteArrayContent(stream.ToArray());
+                httpContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/xml");
+                var request = CreateHttpRequestMessage("SendExpensesClassification", HttpMethod.Post, httpContent);
+                using (var response = await httpClient.SendAsync(request))
+                {
+                    response.EnsureSuccessStatusCode();
+                    var responseStr = await response.Content.ReadAsStringAsync();
+                    try
+                    {
+                        var responseDoc = (ResponseDoc)responseDeserializer.Deserialize(new StringReader(responseStr));
+                        return responseDoc;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Failed to parse response: " + responseStr, ex);
+                    }
+                }
+            }
         }
 
         public ResponseDoc SendIncomeClassification(IncomeClassificationsDoc incomeClassificationsDoc)
         {
-            throw new NotImplementedException();
+            return SendIncomeClassificationAsync(incomeClassificationsDoc).GetAwaiter().GetResult();
         }
 
-        public Task<ResponseDoc> SendIncomeClassificationAsync(IncomeClassificationsDoc incomeClassificationsDoc)
+        public async Task<ResponseDoc> SendIncomeClassificationAsync(IncomeClassificationsDoc incomeClassificationsDoc)
         {
-            throw new NotImplementedException();
+            var requestSerializer = new XmlSerializer(typeof(IncomeClassificationsDoc));
+            var responseDeserializer = new XmlSerializer(typeof(ResponseDoc));
+            using (var stream = new MemoryStream())
+            {
+                requestSerializer.Serialize(stream, incomeClassificationsDoc);
+                var httpContent = new ByteArrayContent(stream.ToArray());
+                httpContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/xml");
+                var request = CreateHttpRequestMessage("SendIncomeClassification", HttpMethod.Post, httpContent);
+                using (var response = await httpClient.SendAsync(request))
+                {
+                    response.EnsureSuccessStatusCode();
+                    var responseStr = await response.Content.ReadAsStringAsync();
+                    try
+                    {
+                        var responseDoc = (ResponseDoc)responseDeserializer.Deserialize(new StringReader(responseStr));
+                        return responseDoc;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Failed to parse response: " + responseStr, ex);
+                    }
+                }
+            }
         }
 
         public ResponseDoc SendInvoices(InvoicesDoc invoicesDoc)
@@ -103,9 +180,16 @@ namespace myData.Client
                 using (var response = await httpClient.SendAsync(request))
                 {
                     response.EnsureSuccessStatusCode();
-                    var responseDoc = (ResponseDoc)responseDeserializer.Deserialize(await response.Content.ReadAsStreamAsync());
-
-                    return responseDoc;
+                    var responseStr = await response.Content.ReadAsStringAsync();
+                    try
+                    {
+                        var responseDoc = (ResponseDoc)responseDeserializer.Deserialize(new StringReader(responseStr));
+                        return responseDoc;
+                    }
+                    catch(Exception ex)
+                    {
+                        throw new Exception("Failed to parse response: " + responseStr, ex);
+                    }
                 }
             }
         }

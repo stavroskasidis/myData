@@ -19,7 +19,7 @@ namespace myData.ConsoleTest.net45
 
 
             var httpClient = new HttpClient();
-            var client = new myDataClient("stavroskasidis", "eaa74da20e854172829f6cb9fa2cb76e", "https://mydata-dev.azure-api.net", httpClient);
+            var client = new myDataClient("takistoleizer", "8c9917040eda444b8d600914d54274a2", "https://mydata-dev.azure-api.net", httpClient);
 
             var invoicesDoc = new InvoicesDoc();
             invoicesDoc.invoice = new AadeBookInvoiceType[]
@@ -31,7 +31,9 @@ namespace myData.ConsoleTest.net45
                         series = "SERIES 1",
                         aa = 1111,
                         issueDate = DateTime.Now,
-                        invoiceType = InvoiceType.Item111  // ΑΛΠ
+                        invoiceType = InvoiceType.Item111 , // ΑΛΠ
+                        currency = CurrencyType.EUR,
+                        currencySpecified = true
                     },
                     invoiceDetails = new InvoiceRowType[]
                     {
@@ -46,24 +48,52 @@ namespace myData.ConsoleTest.net45
                             lineNumber = 2,
                             netValue = 10,
                             vatCategory = 2 // 13%
+                            
                         }
                     },
                     invoiceSummary = new InvoiceSummaryType
                     {
                         totalNetValue = 15,
                         totalVatAmount = (5 * 0.24m + 10 * 0.13m),
-                        totalGrossValue = 15 + (5 * 0.24m + 10 * 0.13m)
+                        totalGrossValue = 15 + (5 * 0.24m + 10 * 0.13m),
+                    },
+                    issuer = new PartyType
+                    {
+                        vatNumber = "123456789",
+                        country = CountryType.GR,
+                        address = new AddressType
+                        {
+                            street = "str",
+                            city = "test",
+                            number = "33",
+                            postalCode = "33445"
+                        }
                     }
                 }
             };
 
             try
             {
+                Console.WriteLine("SendInvoices ...");
                 var response = await client.SendInvoicesAsync(invoicesDoc);
-                Console.WriteLine("SendInvoicesResponse");
                 foreach (var r in response.response)
                 {
-                    Console.WriteLine($"{r.entitylineNumber}: status {r.statusCode}");
+                    Console.WriteLine($"{r.entitylineNumber}: status {r.statusCode}, data: {string.Join(" ",r.Items.Select(x=> x.ToString()))}");
+                }
+
+
+                Console.WriteLine("RequestInvoices ...");
+                var response2 = await client.RequestInvoicesAsync("0");
+                if (response2.invoicesDoc.invoice == null)
+                {
+                    Console.WriteLine("No invoice found");
+                }
+                else
+                {
+                    foreach (var invoice in response2.invoicesDoc.invoice)
+                    {
+                        Console.WriteLine($"Invoice: {invoice.mark}");
+                    }
                 }
 
             }
@@ -71,6 +101,8 @@ namespace myData.ConsoleTest.net45
             {
                 Console.WriteLine(ex.ToString());
             }
+
+            Console.ReadKey();
         }
     }
 }
