@@ -1,5 +1,10 @@
 ﻿# myData .Net Client
 
+## Compatibility
+.Net 4.5+
+
+.Net Core 2.X+
+
 ## To update the schema
 
 1. Empty the "src/myData.Client/Schema" folder.
