@@ -1,4 +1,4 @@
-﻿# myData schema
+﻿# myData .Net Client
 
 ## To update the schema
 
