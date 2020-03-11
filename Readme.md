@@ -1,9 +1,9 @@
 ﻿# myData .Net Client
 
 ## Compatibility
-.Net 4.5+
+.Net 4.5+ (Legacy)
 
-.Net Core 2.X+
+.Net Core 2.X+ (.Net standard 2.0)
 
 ## To update the schema
 
