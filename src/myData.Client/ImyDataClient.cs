@@ -5,12 +5,15 @@ namespace myData.Client
 {
     public interface ImyDataClient
     {
-        RequestedInvoicesDoc RequestInvoices(string mark, string nextPartitionKey = null, string nextRowKey = null);
-        Task<RequestedInvoicesDoc> RequestInvoicesAsync(string mark, string nextPartitionKey = null, string nextRowKey = null);
+        ResponseDoc CancelInvoice(string mark);
+        Task<ResponseDoc> CancelInvoiceAsync(string mark);
+
+        RequestedDoc RequestDocs(long? mark = null);
+        Task<RequestedDoc> RequestDocsAsync(long? mark = null);
 
 
-        RequestedInvoicesDoc RequestIssuerInvoices(string mark, string nextPartitionKey = null, string nextRowKey = null);
-        Task<RequestedInvoicesDoc> RequestIssuerInvoicesAsync(string mark, string nextPartitionKey = null, string nextRowKey = null);
+        RequestedDoc RequestTransmittedDocs(long mark);
+        Task<RequestedDoc> RequestTransmittedDocsAsync(long mark);
 
 
         ResponseDoc SendExpensesClassification(ExpensesClassificationsDoc expensesClassificationsDoc);

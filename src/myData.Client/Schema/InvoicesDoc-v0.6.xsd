@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2011 sp1 (http://www.altova.com) by End User (free.org) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:inv="http://www.aade.gr/myDATA/invoice/v1.0" targetNamespace="http://www.aade.gr/myDATA/invoice/v1.0" elementFormDefault="qualified" version="5.2">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:inv="http://www.aade.gr/myDATA/invoice/v1.0" xmlns:icls="https://www.aade.gr/myDATA/incomeClassificaton/v1.0" xmlns:ecls="https://www.aade.gr/myDATA/expensesClassificaton/v1.0" targetNamespace="http://www.aade.gr/myDATA/invoice/v1.0" elementFormDefault="qualified" version="0.6">
+	<xs:import namespace="https://www.aade.gr/myDATA/incomeClassificaton/v1.0" schemaLocation="incomeClassification-v0.6.xsd"/>
+	<xs:import namespace="https://www.aade.gr/myDATA/expensesClassificaton/v1.0" schemaLocation="expensesClassification-v0.6.xsd"/>
 	<xs:element name="InvoicesDoc">
 		<xs:annotation>
 			<xs:documentation>Παραστατικό ΑΑΔΕ</xs:documentation>
@@ -18,9 +19,19 @@
 					<xs:documentation>Αναγνωριστικό Παραστατικού</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="mark" type="xs:string" minOccurs="0">
+			<xs:element name="mark" type="xs:long" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Μοναδικός Αριθμός Καταχώρησης Παραστατικού</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="cancelledByMark" type="xs:long" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Μοναδικός Αριθμός Καταχώρησης Ακυρωτικού</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="authenticationCode" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Συμβολοσειρά Αυθεντικοποίησης Παρόχου</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="issuer" type="inv:PartyType" minOccurs="0">
@@ -38,10 +49,34 @@
 					<xs:documentation>Γενικά Στοιχεία</xs:documentation>
 				</xs:annotation>
 			</xs:element>
+			<xs:element name="paymentMethods" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Πληρωμές</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="paymentMethodDetails" type="inv:PaymentMethodDetailType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Στοιχεία Πληρωμών</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 			<xs:element name="invoiceDetails" type="inv:InvoiceRowType" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation>Λεπτομέρειες Παραστατικού</xs:documentation>
 				</xs:annotation>
+			</xs:element>
+			<xs:element name="taxesTotals" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Σύνολα Φόρων</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="taxes" type="inv:TaxTotalsType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
 			</xs:element>
 			<xs:element name="invoiceSummary" type="inv:InvoiceSummaryType">
 				<xs:annotation>
@@ -57,7 +92,7 @@
 					<xs:documentation>Σειρά Παραστατικού</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="aa" type="xs:long">
+			<xs:element name="aa" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>ΑΑ Παραστατικού</xs:documentation>
 				</xs:annotation>
@@ -87,7 +122,7 @@
 					<xs:documentation>Ισοτιμία</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="correlatedInvoices" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="correlatedInvoices" type="xs:long" minOccurs="0" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation>Συσχετιζόμενα Παραστατικά</xs:documentation>
 				</xs:annotation>
@@ -107,10 +142,18 @@
 					<xs:documentation>Ώρα Έναρξης Αποστολής</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="vehicleNumber" type="xs:string" minOccurs="0">
+			<xs:element name="vehicleNumber" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Αριθμός Μεταφορικού Μέσου</xs:documentation>
+					<xs:documentation>Αριθμός Οχήματος</xs:documentation>
 				</xs:annotation>
+				<xs:simpleType>
+					<xs:annotation>
+						<xs:documentation>Αριθμός Μεταφορικού Μέσου</xs:documentation>
+					</xs:annotation>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="150"/>
+					</xs:restriction>
+				</xs:simpleType>
 			</xs:element>
 			<xs:element name="movePurpose" minOccurs="0">
 				<xs:annotation>
@@ -167,6 +210,11 @@
 					<xs:documentation>Κατηγορία ΦΠΑ</xs:documentation>
 				</xs:annotation>
 			</xs:element>
+			<xs:element name="vatAmount" type="inv:AmountType">
+				<xs:annotation>
+					<xs:documentation>Ποσό ΦΠΑ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 			<xs:element name="vatExemptionCategory" type="inv:VatExemptionType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Κατηγορία Αιτίας Εξαίρεσης ΦΠΑ</xs:documentation>
@@ -190,6 +238,11 @@
 			<xs:element name="withheldPercentCategory" type="inv:WithheldType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Κατηγορία Συντελεστή  Παρ. Φόρου</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stampDutyAmount" type="inv:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Ποσό Χαρτοσήμου</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="stampDutyPercentCategory" type="inv:StampDutyType" minOccurs="0">
@@ -217,14 +270,32 @@
 					<xs:documentation>Ποσό Φόρου Διαμονης</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="deductionsPercentage" type="inv:DeductionsType" minOccurs="0">
+			<xs:element name="deductionsAmount" type="inv:AmountType" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Συντελεστής  Κρατήσεων</xs:documentation>
+					<xs:documentation>Ποσό Κρατήσεων</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="lineComments" type="xs:string" minOccurs="0">
+			<xs:element name="lineComments" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Σχόλια</xs:documentation>
+					<xs:documentation>Σχόλια Γραμμής</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:annotation>
+						<xs:documentation>Σχόλια</xs:documentation>
+					</xs:annotation>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="150"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="incomeClassification" type="icls:IncomeClassificationType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Λίστα Χαρακτηρισμών Εσόδων</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expensesClassification" type="ecls:ExpensesClassificationType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Λίστα Χαρακτηρισμού Εξόδων</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -271,6 +342,12 @@
 					<xs:documentation>Συνολική Αξία</xs:documentation>
 				</xs:annotation>
 			</xs:element>
+			<xs:element name="incomeClassification" type="icls:IncomeClassificationType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Λίστα Χαρακτηρισμών Εσόδων</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expensesClassification" type="ecls:ExpensesClassificationType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="PartyType">
@@ -290,12 +367,20 @@
 					<xs:documentation>Αρ. Εγκατάστασης</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="name" type="xs:string" minOccurs="0">
+			<xs:element name="name" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Επωνυμία</xs:documentation>
 				</xs:annotation>
+				<xs:simpleType>
+					<xs:annotation>
+						<xs:documentation>Επωνυμία</xs:documentation>
+					</xs:annotation>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="150"/>
+					</xs:restriction>
+				</xs:simpleType>
 			</xs:element>
-			<xs:element name="address" type="inv:AddressType">
+			<xs:element name="address" type="inv:AddressType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Διεύθυνση</xs:documentation>
 				</xs:annotation>
@@ -304,10 +389,15 @@
 	</xs:complexType>
 	<xs:complexType name="AddressType">
 		<xs:sequence>
-			<xs:element name="street" type="xs:string" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>Οδός</xs:documentation>
-				</xs:annotation>
+			<xs:element name="street" minOccurs="0">
+				<xs:simpleType>
+					<xs:annotation>
+						<xs:documentation>Επωνυμία</xs:documentation>
+					</xs:annotation>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="150"/>
+					</xs:restriction>
+				</xs:simpleType>
 			</xs:element>
 			<xs:element name="number" type="xs:string" minOccurs="0">
 				<xs:annotation>
@@ -319,10 +409,15 @@
 					<xs:documentation>ΤΚ</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="city" type="xs:string">
-				<xs:annotation>
-					<xs:documentation>Πόλη</xs:documentation>
-				</xs:annotation>
+			<xs:element name="city">
+				<xs:simpleType>
+					<xs:annotation>
+						<xs:documentation>Πόλη</xs:documentation>
+					</xs:annotation>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="150"/>
+					</xs:restriction>
+				</xs:simpleType>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
@@ -338,16 +433,85 @@
 					<xs:documentation>Ημερομηνία Δήλωσης</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="doy" type="xs:string" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>ΔΟΥ Δήλωσης</xs:documentation>
-				</xs:annotation>
+			<xs:element name="doy" minOccurs="0">
+				<xs:simpleType>
+					<xs:annotation>
+						<xs:documentation>ΔΟΥ Δήλωσης</xs:documentation>
+					</xs:annotation>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="150"/>
+					</xs:restriction>
+				</xs:simpleType>
 			</xs:element>
 			<xs:element name="shipId" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>Στοιχεία Πλοίου</xs:documentation>
 				</xs:annotation>
 			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PaymentMethodDetailType">
+		<xs:sequence>
+			<xs:element name="type">
+				<xs:annotation>
+					<xs:documentation>Τύπος Πληρωμής</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="5"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="amount" type="inv:AmountType">
+				<xs:annotation>
+					<xs:documentation>Αναλογούν Ποσό</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="paymentMethodInfo" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Λοιπές Πληροφορίες</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TaxTotalsType">
+		<xs:sequence>
+			<xs:element name="taxType">
+				<xs:annotation>
+					<xs:documentation>Είδος Φόρου</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="5"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="taxCategory" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Κατηγορία Φόρου</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="underlyingValue" type="inv:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Υποκείμενη Αξία</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="taxAmount">
+				<xs:annotation>
+					<xs:documentation>Ποσό Φόρου</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="inv:AmountType"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="id" type="xs:byte" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:simpleType name="CountryType">
@@ -622,16 +786,11 @@
 			<xs:enumeration value="7.1"/>
 			<xs:enumeration value="8.1"/>
 			<xs:enumeration value="8.2"/>
-			<xs:enumeration value="8.3"/>
-			<xs:enumeration value="9.1"/>
-			<xs:enumeration value="9.2"/>
-			<xs:enumeration value="9.3"/>
-			<xs:enumeration value="10.1"/>
-			<xs:enumeration value="10.2"/>
 			<xs:enumeration value="11.1"/>
 			<xs:enumeration value="11.2"/>
 			<xs:enumeration value="11.3"/>
 			<xs:enumeration value="11.4"/>
+			<xs:enumeration value="11.5"/>
 			<xs:enumeration value="12"/>
 			<xs:enumeration value="13.1"/>
 			<xs:enumeration value="13.2"/>
@@ -648,7 +807,6 @@
 			<xs:enumeration value="14.31"/>
 			<xs:enumeration value="15.1"/>
 			<xs:enumeration value="16.1"/>
-			<xs:enumeration value="16.30"/>
 			<xs:enumeration value="17.1"/>
 			<xs:enumeration value="17.2"/>
 			<xs:enumeration value="17.3"/>
@@ -830,7 +988,8 @@
 	<xs:simpleType name="ExchangeRateType">
 		<xs:restriction base="xs:decimal">
 			<xs:minExclusive value="0"/>
-			<xs:fractionDigits value="2"/>
+			<xs:fractionDigits value="5"/>
+			<xs:maxInclusive value="50000"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="InvoiceDetailType">
@@ -860,7 +1019,7 @@
 	<xs:simpleType name="WithheldType">
 		<xs:restriction base="xs:int">
 			<xs:minInclusive value="1"/>
-			<xs:maxInclusive value="12"/>
+			<xs:maxInclusive value="15"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="StampDutyType">
@@ -872,13 +1031,13 @@
 	<xs:simpleType name="FeesType">
 		<xs:restriction base="xs:int">
 			<xs:minInclusive value="1"/>
-			<xs:maxInclusive value="8"/>
+			<xs:maxInclusive value="9"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="OtherTaxesType">
 		<xs:restriction base="xs:int">
 			<xs:minInclusive value="1"/>
-			<xs:maxInclusive value="9"/>
+			<xs:maxInclusive value="14"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="DeductionsType">
@@ -890,7 +1049,7 @@
 	</xs:simpleType>
 	<xs:simpleType name="AmountType">
 		<xs:restriction base="xs:decimal">
-			<xs:fractionDigits value="5"/>
+			<xs:fractionDigits value="2"/>
 			<xs:minInclusive value="0"/>
 		</xs:restriction>
 	</xs:simpleType>

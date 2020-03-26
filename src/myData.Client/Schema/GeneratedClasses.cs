@@ -46,53 +46,54 @@ namespace myData.Client.Schema {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.aade.gr/myDATA/expensesClassificaton/v1.0")]
     public partial class InvoiceExpensesClassificationType {
         
-        private string markField;
+        private long invoiceMarkField;
         
-        private long classificationReceiptField;
+        private long classificationMarkField;
         
-        private bool classificationReceiptFieldSpecified;
+        private bool classificationMarkFieldSpecified;
         
-        private InvoicesExpensesClassificationDetailType[] invoicesExpensesClassificationDetailsField;
+        private object[] itemsField;
         
         /// <remarks/>
-        public string mark {
+        public long invoiceMark {
             get {
-                return this.markField;
+                return this.invoiceMarkField;
             }
             set {
-                this.markField = value;
+                this.invoiceMarkField = value;
             }
         }
         
         /// <remarks/>
-        public long classificationReceipt {
+        public long classificationMark {
             get {
-                return this.classificationReceiptField;
+                return this.classificationMarkField;
             }
             set {
-                this.classificationReceiptField = value;
+                this.classificationMarkField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool classificationReceiptSpecified {
+        public bool classificationMarkSpecified {
             get {
-                return this.classificationReceiptFieldSpecified;
+                return this.classificationMarkFieldSpecified;
             }
             set {
-                this.classificationReceiptFieldSpecified = value;
+                this.classificationMarkFieldSpecified = value;
             }
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("invoicesExpensesClassificationDetails")]
-        public InvoicesExpensesClassificationDetailType[] invoicesExpensesClassificationDetails {
+        [System.Xml.Serialization.XmlElementAttribute("invoicesExpensesClassificationDetails", typeof(InvoicesExpensesClassificationDetailType))]
+        [System.Xml.Serialization.XmlElementAttribute("transactionMode", typeof(int))]
+        public object[] Items {
             get {
-                return this.invoicesExpensesClassificationDetailsField;
+                return this.itemsField;
             }
             set {
-                this.invoicesExpensesClassificationDetailsField = value;
+                this.itemsField = value;
             }
         }
     }
@@ -107,7 +108,7 @@ namespace myData.Client.Schema {
         
         private int lineNumberField;
         
-        private ExpensesClassificationType expensesClassificationDetailDataField;
+        private ExpensesClassificationType[] expensesClassificationDetailDataField;
         
         /// <remarks/>
         public int lineNumber {
@@ -120,7 +121,8 @@ namespace myData.Client.Schema {
         }
         
         /// <remarks/>
-        public ExpensesClassificationType expensesClassificationDetailData {
+        [System.Xml.Serialization.XmlElementAttribute("expensesClassificationDetailData")]
+        public ExpensesClassificationType[] expensesClassificationDetailData {
             get {
                 return this.expensesClassificationDetailDataField;
             }
@@ -138,9 +140,13 @@ namespace myData.Client.Schema {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.aade.gr/myDATA/expensesClassificaton/v1.0")]
     public partial class ExpensesClassificationType {
         
-        private int classificationTypeField;
+        private ExpensesClassificationTypeClassificationType classificationTypeField;
         
-        private int classificationCategoryField;
+        private bool classificationTypeFieldSpecified;
+        
+        private ExpensesClassificationCategoryType classificationCategoryField;
+        
+        private bool classificationCategoryFieldSpecified;
         
         private decimal amountField;
         
@@ -149,7 +155,7 @@ namespace myData.Client.Schema {
         private bool idFieldSpecified;
         
         /// <remarks/>
-        public int classificationType {
+        public ExpensesClassificationTypeClassificationType classificationType {
             get {
                 return this.classificationTypeField;
             }
@@ -159,12 +165,34 @@ namespace myData.Client.Schema {
         }
         
         /// <remarks/>
-        public int classificationCategory {
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool classificationTypeSpecified {
+            get {
+                return this.classificationTypeFieldSpecified;
+            }
+            set {
+                this.classificationTypeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public ExpensesClassificationCategoryType classificationCategory {
             get {
                 return this.classificationCategoryField;
             }
             set {
                 this.classificationCategoryField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool classificationCategorySpecified {
+            get {
+                return this.classificationCategoryFieldSpecified;
+            }
+            set {
+                this.classificationCategoryFieldSpecified = value;
             }
         }
         
@@ -203,6 +231,296 @@ namespace myData.Client.Schema {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
     [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.aade.gr/myDATA/expensesClassificaton/v1.0")]
+    public enum ExpensesClassificationTypeClassificationType {
+        
+        /// <remarks/>
+        E3_101,
+        
+        /// <remarks/>
+        E3_102_001,
+        
+        /// <remarks/>
+        E3_102_002,
+        
+        /// <remarks/>
+        E3_102_003,
+        
+        /// <remarks/>
+        E3_102_004,
+        
+        /// <remarks/>
+        E3_102_005,
+        
+        /// <remarks/>
+        E3_102_006,
+        
+        /// <remarks/>
+        E3_104,
+        
+        /// <remarks/>
+        E3_201,
+        
+        /// <remarks/>
+        E3_202_001,
+        
+        /// <remarks/>
+        E3_202_002,
+        
+        /// <remarks/>
+        E3_202_003,
+        
+        /// <remarks/>
+        E3_202_004,
+        
+        /// <remarks/>
+        E3_202_005,
+        
+        /// <remarks/>
+        E3_204,
+        
+        /// <remarks/>
+        E3_207,
+        
+        /// <remarks/>
+        E3_209,
+        
+        /// <remarks/>
+        E3_301,
+        
+        /// <remarks/>
+        E3_302_001,
+        
+        /// <remarks/>
+        E3_302_002,
+        
+        /// <remarks/>
+        E3_302_003,
+        
+        /// <remarks/>
+        E3_302_004,
+        
+        /// <remarks/>
+        E3_302_005,
+        
+        /// <remarks/>
+        E3_304,
+        
+        /// <remarks/>
+        E3_307,
+        
+        /// <remarks/>
+        E3_309,
+        
+        /// <remarks/>
+        E3_312,
+        
+        /// <remarks/>
+        E3_313_001,
+        
+        /// <remarks/>
+        E3_313_002,
+        
+        /// <remarks/>
+        E3_313_003,
+        
+        /// <remarks/>
+        E3_313_004,
+        
+        /// <remarks/>
+        E3_313_005,
+        
+        /// <remarks/>
+        E3_315,
+        
+        /// <remarks/>
+        E3_581_001,
+        
+        /// <remarks/>
+        E3_581_002,
+        
+        /// <remarks/>
+        E3_581_003,
+        
+        /// <remarks/>
+        E3_582,
+        
+        /// <remarks/>
+        E3_583,
+        
+        /// <remarks/>
+        E3_584,
+        
+        /// <remarks/>
+        E3_585_001,
+        
+        /// <remarks/>
+        E3_585_002,
+        
+        /// <remarks/>
+        E3_585_003,
+        
+        /// <remarks/>
+        E3_585_004,
+        
+        /// <remarks/>
+        E3_585_005,
+        
+        /// <remarks/>
+        E3_585_006,
+        
+        /// <remarks/>
+        E3_585_007,
+        
+        /// <remarks/>
+        E3_585_008,
+        
+        /// <remarks/>
+        E3_585_009,
+        
+        /// <remarks/>
+        E3_585_010,
+        
+        /// <remarks/>
+        E3_585_011,
+        
+        /// <remarks/>
+        E3_585_012,
+        
+        /// <remarks/>
+        E3_585_013,
+        
+        /// <remarks/>
+        E3_585_014,
+        
+        /// <remarks/>
+        E3_585_015,
+        
+        /// <remarks/>
+        E3_585_016,
+        
+        /// <remarks/>
+        E3_586,
+        
+        /// <remarks/>
+        E3_587,
+        
+        /// <remarks/>
+        E3_588,
+        
+        /// <remarks/>
+        E3_589,
+        
+        /// <remarks/>
+        E3_881_001,
+        
+        /// <remarks/>
+        E3_881_002,
+        
+        /// <remarks/>
+        E3_881_003,
+        
+        /// <remarks/>
+        E3_881_004,
+        
+        /// <remarks/>
+        E3_882_001,
+        
+        /// <remarks/>
+        E3_882_002,
+        
+        /// <remarks/>
+        E3_882_003,
+        
+        /// <remarks/>
+        E3_882_004,
+        
+        /// <remarks/>
+        E3_883_001,
+        
+        /// <remarks/>
+        E3_883_002,
+        
+        /// <remarks/>
+        E3_883_003,
+        
+        /// <remarks/>
+        E3_883_004,
+        
+        /// <remarks/>
+        VAT_361,
+        
+        /// <remarks/>
+        VAT_362,
+        
+        /// <remarks/>
+        VAT_363,
+        
+        /// <remarks/>
+        VAT_364,
+        
+        /// <remarks/>
+        VAT_365,
+        
+        /// <remarks/>
+        VAT_366,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.aade.gr/myDATA/expensesClassificaton/v1.0")]
+    public enum ExpensesClassificationCategoryType {
+        
+        /// <remarks/>
+        category2_1,
+        
+        /// <remarks/>
+        category2_2,
+        
+        /// <remarks/>
+        category2_3,
+        
+        /// <remarks/>
+        category2_4,
+        
+        /// <remarks/>
+        category2_5,
+        
+        /// <remarks/>
+        category2_6,
+        
+        /// <remarks/>
+        category2_7,
+        
+        /// <remarks/>
+        category2_8,
+        
+        /// <remarks/>
+        category2_9,
+        
+        /// <remarks/>
+        category2_10,
+        
+        /// <remarks/>
+        category2_11,
+        
+        /// <remarks/>
+        category2_12,
+        
+        /// <remarks/>
+        category2_13,
+        
+        /// <remarks/>
+        category2_14,
+        
+        /// <remarks/>
+        category2_95,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="https://www.aade.gr/myDATA/incomeClassificaton/v1.0")]
@@ -231,53 +549,54 @@ namespace myData.Client.Schema {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.aade.gr/myDATA/incomeClassificaton/v1.0")]
     public partial class InvoiceIncomeClassificationType {
         
-        private string markField;
+        private long invoiceMarkField;
         
-        private long classificationReceiptField;
+        private long classificationMarkField;
         
-        private bool classificationReceiptFieldSpecified;
+        private bool classificationMarkFieldSpecified;
         
-        private InvoicesIncomeClassificationDetailType[] invoicesIncomeClassificationDetailsField;
+        private object[] itemsField;
         
         /// <remarks/>
-        public string mark {
+        public long invoiceMark {
             get {
-                return this.markField;
+                return this.invoiceMarkField;
             }
             set {
-                this.markField = value;
+                this.invoiceMarkField = value;
             }
         }
         
         /// <remarks/>
-        public long classificationReceipt {
+        public long classificationMark {
             get {
-                return this.classificationReceiptField;
+                return this.classificationMarkField;
             }
             set {
-                this.classificationReceiptField = value;
+                this.classificationMarkField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool classificationReceiptSpecified {
+        public bool classificationMarkSpecified {
             get {
-                return this.classificationReceiptFieldSpecified;
+                return this.classificationMarkFieldSpecified;
             }
             set {
-                this.classificationReceiptFieldSpecified = value;
+                this.classificationMarkFieldSpecified = value;
             }
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("invoicesIncomeClassificationDetails")]
-        public InvoicesIncomeClassificationDetailType[] invoicesIncomeClassificationDetails {
+        [System.Xml.Serialization.XmlElementAttribute("invoicesIncomeClassificationDetails", typeof(InvoicesIncomeClassificationDetailType))]
+        [System.Xml.Serialization.XmlElementAttribute("transactionMode", typeof(int))]
+        public object[] Items {
             get {
-                return this.invoicesIncomeClassificationDetailsField;
+                return this.itemsField;
             }
             set {
-                this.invoicesIncomeClassificationDetailsField = value;
+                this.itemsField = value;
             }
         }
     }
@@ -324,9 +643,9 @@ namespace myData.Client.Schema {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.aade.gr/myDATA/incomeClassificaton/v1.0")]
     public partial class IncomeClassificationType {
         
-        private int classificationTypeField;
+        private IncomeClassificationValueType classificationTypeField;
         
-        private int classificationCategoryField;
+        private IncomeClassificationCategoryType classificationCategoryField;
         
         private decimal amountField;
         
@@ -335,7 +654,7 @@ namespace myData.Client.Schema {
         private bool idFieldSpecified;
         
         /// <remarks/>
-        public int classificationType {
+        public IncomeClassificationValueType classificationType {
             get {
                 return this.classificationTypeField;
             }
@@ -345,7 +664,7 @@ namespace myData.Client.Schema {
         }
         
         /// <remarks/>
-        public int classificationCategory {
+        public IncomeClassificationCategoryType classificationCategory {
             get {
                 return this.classificationCategoryField;
             }
@@ -389,6 +708,149 @@ namespace myData.Client.Schema {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
     [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.aade.gr/myDATA/incomeClassificaton/v1.0")]
+    public enum IncomeClassificationValueType {
+        
+        /// <remarks/>
+        E3_106,
+        
+        /// <remarks/>
+        E3_205,
+        
+        /// <remarks/>
+        E3_210,
+        
+        /// <remarks/>
+        E3_305,
+        
+        /// <remarks/>
+        E3_310,
+        
+        /// <remarks/>
+        E3_318,
+        
+        /// <remarks/>
+        E3_561_001,
+        
+        /// <remarks/>
+        E3_561_002,
+        
+        /// <remarks/>
+        E3_561_003,
+        
+        /// <remarks/>
+        E3_561_004,
+        
+        /// <remarks/>
+        E3_561_005,
+        
+        /// <remarks/>
+        E3_561_006,
+        
+        /// <remarks/>
+        E3_561_007,
+        
+        /// <remarks/>
+        E3_562,
+        
+        /// <remarks/>
+        E3_563,
+        
+        /// <remarks/>
+        E3_564,
+        
+        /// <remarks/>
+        E3_565,
+        
+        /// <remarks/>
+        E3_566,
+        
+        /// <remarks/>
+        E3_567,
+        
+        /// <remarks/>
+        E3_568,
+        
+        /// <remarks/>
+        E3_570,
+        
+        /// <remarks/>
+        E3_595,
+        
+        /// <remarks/>
+        E3_596,
+        
+        /// <remarks/>
+        E3_597,
+        
+        /// <remarks/>
+        E3_880_001,
+        
+        /// <remarks/>
+        E3_880_002,
+        
+        /// <remarks/>
+        E3_880_003,
+        
+        /// <remarks/>
+        E3_880_004,
+        
+        /// <remarks/>
+        E3_881_001,
+        
+        /// <remarks/>
+        E3_881_002,
+        
+        /// <remarks/>
+        E3_881_003,
+        
+        /// <remarks/>
+        E3_881_004,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.aade.gr/myDATA/incomeClassificaton/v1.0")]
+    public enum IncomeClassificationCategoryType {
+        
+        /// <remarks/>
+        category1_1,
+        
+        /// <remarks/>
+        category1_2,
+        
+        /// <remarks/>
+        category1_3,
+        
+        /// <remarks/>
+        category1_4,
+        
+        /// <remarks/>
+        category1_5,
+        
+        /// <remarks/>
+        category1_6,
+        
+        /// <remarks/>
+        category1_7,
+        
+        /// <remarks/>
+        category1_8,
+        
+        /// <remarks/>
+        category1_9,
+        
+        /// <remarks/>
+        category1_10,
+        
+        /// <remarks/>
+        category1_95,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.aade.gr/myDATA/invoice/v1.0")]
@@ -419,7 +881,15 @@ namespace myData.Client.Schema {
         
         private string uidField;
         
-        private string markField;
+        private long markField;
+        
+        private bool markFieldSpecified;
+        
+        private long cancelledByMarkField;
+        
+        private bool cancelledByMarkFieldSpecified;
+        
+        private string authenticationCodeField;
         
         private PartyType issuerField;
         
@@ -427,7 +897,11 @@ namespace myData.Client.Schema {
         
         private InvoiceHeaderType invoiceHeaderField;
         
+        private PaymentMethodDetailType[] paymentMethodsField;
+        
         private InvoiceRowType[] invoiceDetailsField;
+        
+        private TaxTotalsType[] taxesTotalsField;
         
         private InvoiceSummaryType invoiceSummaryField;
         
@@ -442,12 +916,54 @@ namespace myData.Client.Schema {
         }
         
         /// <remarks/>
-        public string mark {
+        public long mark {
             get {
                 return this.markField;
             }
             set {
                 this.markField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool markSpecified {
+            get {
+                return this.markFieldSpecified;
+            }
+            set {
+                this.markFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public long cancelledByMark {
+            get {
+                return this.cancelledByMarkField;
+            }
+            set {
+                this.cancelledByMarkField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cancelledByMarkSpecified {
+            get {
+                return this.cancelledByMarkFieldSpecified;
+            }
+            set {
+                this.cancelledByMarkFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string authenticationCode {
+            get {
+                return this.authenticationCodeField;
+            }
+            set {
+                this.authenticationCodeField = value;
             }
         }
         
@@ -482,6 +998,17 @@ namespace myData.Client.Schema {
         }
         
         /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("paymentMethodDetails", IsNullable=false)]
+        public PaymentMethodDetailType[] paymentMethods {
+            get {
+                return this.paymentMethodsField;
+            }
+            set {
+                this.paymentMethodsField = value;
+            }
+        }
+        
+        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("invoiceDetails")]
         public InvoiceRowType[] invoiceDetails {
             get {
@@ -489,6 +1016,17 @@ namespace myData.Client.Schema {
             }
             set {
                 this.invoiceDetailsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("taxes", IsNullable=false)]
+        public TaxTotalsType[] taxesTotals {
+            get {
+                return this.taxesTotalsField;
+            }
+            set {
+                this.taxesTotalsField = value;
             }
         }
         
@@ -1384,7 +1922,7 @@ namespace myData.Client.Schema {
         
         private string seriesField;
         
-        private long aaField;
+        private string aaField;
         
         private System.DateTime issueDateField;
         
@@ -1402,7 +1940,7 @@ namespace myData.Client.Schema {
         
         private bool exchangeRateFieldSpecified;
         
-        private string[] correlatedInvoicesField;
+        private long[] correlatedInvoicesField;
         
         private bool selfPricingField;
         
@@ -1433,7 +1971,7 @@ namespace myData.Client.Schema {
         }
         
         /// <remarks/>
-        public long aa {
+        public string aa {
             get {
                 return this.aaField;
             }
@@ -1528,7 +2066,7 @@ namespace myData.Client.Schema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("correlatedInvoices")]
-        public string[] correlatedInvoices {
+        public long[] correlatedInvoices {
             get {
                 return this.correlatedInvoicesField;
             }
@@ -1721,30 +2259,6 @@ namespace myData.Client.Schema {
         Item82,
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("8.3")]
-        Item83,
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("9.1")]
-        Item91,
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("9.2")]
-        Item92,
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("9.3")]
-        Item93,
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("10.1")]
-        Item101,
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("10.2")]
-        Item102,
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("11.1")]
         Item111,
         
@@ -1759,6 +2273,10 @@ namespace myData.Client.Schema {
         /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("11.4")]
         Item114,
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("11.5")]
+        Item115,
         
         /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("12")]
@@ -1823,10 +2341,6 @@ namespace myData.Client.Schema {
         /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("16.1")]
         Item161,
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("16.30")]
-        Item1630,
         
         /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("17.1")]
@@ -2364,6 +2878,51 @@ namespace myData.Client.Schema {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.aade.gr/myDATA/invoice/v1.0")]
+    public partial class PaymentMethodDetailType {
+        
+        private int typeField;
+        
+        private decimal amountField;
+        
+        private string paymentMethodInfoField;
+        
+        /// <remarks/>
+        public int type {
+            get {
+                return this.typeField;
+            }
+            set {
+                this.typeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal amount {
+            get {
+                return this.amountField;
+            }
+            set {
+                this.amountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string paymentMethodInfo {
+            get {
+                return this.paymentMethodInfoField;
+            }
+            set {
+                this.paymentMethodInfoField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.aade.gr/myDATA/invoice/v1.0")]
     public partial class InvoiceRowType {
         
         private int lineNumberField;
@@ -2384,6 +2943,8 @@ namespace myData.Client.Schema {
         
         private int vatCategoryField;
         
+        private decimal vatAmountField;
+        
         private int vatExemptionCategoryField;
         
         private bool vatExemptionCategoryFieldSpecified;
@@ -2401,6 +2962,10 @@ namespace myData.Client.Schema {
         private int withheldPercentCategoryField;
         
         private bool withheldPercentCategoryFieldSpecified;
+        
+        private decimal stampDutyAmountField;
+        
+        private bool stampDutyAmountFieldSpecified;
         
         private int stampDutyPercentCategoryField;
         
@@ -2422,11 +2987,15 @@ namespace myData.Client.Schema {
         
         private bool otherTaxesAmountFieldSpecified;
         
-        private decimal deductionsPercentageField;
+        private decimal deductionsAmountField;
         
-        private bool deductionsPercentageFieldSpecified;
+        private bool deductionsAmountFieldSpecified;
         
         private string lineCommentsField;
+        
+        private IncomeClassificationType[] incomeClassificationField;
+        
+        private ExpensesClassificationType[] expensesClassificationField;
         
         /// <remarks/>
         public int lineNumber {
@@ -2522,6 +3091,16 @@ namespace myData.Client.Schema {
         }
         
         /// <remarks/>
+        public decimal vatAmount {
+            get {
+                return this.vatAmountField;
+            }
+            set {
+                this.vatAmountField = value;
+            }
+        }
+        
+        /// <remarks/>
         public int vatExemptionCategory {
             get {
                 return this.vatExemptionCategoryField;
@@ -2612,6 +3191,27 @@ namespace myData.Client.Schema {
             }
             set {
                 this.withheldPercentCategoryFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal stampDutyAmount {
+            get {
+                return this.stampDutyAmountField;
+            }
+            set {
+                this.stampDutyAmountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool stampDutyAmountSpecified {
+            get {
+                return this.stampDutyAmountFieldSpecified;
+            }
+            set {
+                this.stampDutyAmountFieldSpecified = value;
             }
         }
         
@@ -2721,23 +3321,23 @@ namespace myData.Client.Schema {
         }
         
         /// <remarks/>
-        public decimal deductionsPercentage {
+        public decimal deductionsAmount {
             get {
-                return this.deductionsPercentageField;
+                return this.deductionsAmountField;
             }
             set {
-                this.deductionsPercentageField = value;
+                this.deductionsAmountField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool deductionsPercentageSpecified {
+        public bool deductionsAmountSpecified {
             get {
-                return this.deductionsPercentageFieldSpecified;
+                return this.deductionsAmountFieldSpecified;
             }
             set {
-                this.deductionsPercentageFieldSpecified = value;
+                this.deductionsAmountFieldSpecified = value;
             }
         }
         
@@ -2748,6 +3348,28 @@ namespace myData.Client.Schema {
             }
             set {
                 this.lineCommentsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("incomeClassification")]
+        public IncomeClassificationType[] incomeClassification {
+            get {
+                return this.incomeClassificationField;
+            }
+            set {
+                this.incomeClassificationField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("expensesClassification")]
+        public ExpensesClassificationType[] expensesClassification {
+            get {
+                return this.expensesClassificationField;
+            }
+            set {
+                this.expensesClassificationField = value;
             }
         }
     }
@@ -2816,6 +3438,114 @@ namespace myData.Client.Schema {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.aade.gr/myDATA/invoice/v1.0")]
+    public partial class TaxTotalsType {
+        
+        private sbyte taxTypeField;
+        
+        private sbyte taxCategoryField;
+        
+        private bool taxCategoryFieldSpecified;
+        
+        private decimal underlyingValueField;
+        
+        private bool underlyingValueFieldSpecified;
+        
+        private decimal taxAmountField;
+        
+        private sbyte idField;
+        
+        private bool idFieldSpecified;
+        
+        /// <remarks/>
+        public sbyte taxType {
+            get {
+                return this.taxTypeField;
+            }
+            set {
+                this.taxTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public sbyte taxCategory {
+            get {
+                return this.taxCategoryField;
+            }
+            set {
+                this.taxCategoryField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool taxCategorySpecified {
+            get {
+                return this.taxCategoryFieldSpecified;
+            }
+            set {
+                this.taxCategoryFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal underlyingValue {
+            get {
+                return this.underlyingValueField;
+            }
+            set {
+                this.underlyingValueField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool underlyingValueSpecified {
+            get {
+                return this.underlyingValueFieldSpecified;
+            }
+            set {
+                this.underlyingValueFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal taxAmount {
+            get {
+                return this.taxAmountField;
+            }
+            set {
+                this.taxAmountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public sbyte id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool idSpecified {
+            get {
+                return this.idFieldSpecified;
+            }
+            set {
+                this.idFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.aade.gr/myDATA/invoice/v1.0")]
     public partial class InvoiceSummaryType {
         
         private decimal totalNetValueField;
@@ -2833,6 +3563,10 @@ namespace myData.Client.Schema {
         private decimal totalDeductionsAmountField;
         
         private decimal totalGrossValueField;
+        
+        private IncomeClassificationType[] incomeClassificationField;
+        
+        private ExpensesClassificationType[] expensesClassificationField;
         
         /// <remarks/>
         public decimal totalNetValue {
@@ -2913,6 +3647,28 @@ namespace myData.Client.Schema {
                 this.totalGrossValueField = value;
             }
         }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("incomeClassification")]
+        public IncomeClassificationType[] incomeClassification {
+            get {
+                return this.incomeClassificationField;
+            }
+            set {
+                this.incomeClassificationField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("expensesClassification")]
+        public ExpensesClassificationType[] expensesClassification {
+            get {
+                return this.expensesClassificationField;
+            }
+            set {
+                this.expensesClassificationField = value;
+            }
+        }
     }
     
     /// <remarks/>
@@ -2922,11 +3678,17 @@ namespace myData.Client.Schema {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.aade.gr/myDATA/invoice/v1.0")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="http://www.aade.gr/myDATA/invoice/v1.0", IsNullable=false)]
-    public partial class RequestedInvoicesDoc {
+    public partial class RequestedDoc {
         
         private continuationTokenType continuationTokenField;
         
-        private RequestedInvoicesDocInvoicesDoc invoicesDocField;
+        private RequestedDocInvoicesDoc invoicesDocField;
+        
+        private RequestedDocCancelledInvoicesDoc cancelledInvoicesDocField;
+        
+        private RequestedDocIncomeClassificationsDoc incomeClassificationsDocField;
+        
+        private RequestedDocExpensesClassificationDoc expensesClassificationDocField;
         
         /// <remarks/>
         public continuationTokenType continuationToken {
@@ -2939,12 +3701,42 @@ namespace myData.Client.Schema {
         }
         
         /// <remarks/>
-        public RequestedInvoicesDocInvoicesDoc invoicesDoc {
+        public RequestedDocInvoicesDoc invoicesDoc {
             get {
                 return this.invoicesDocField;
             }
             set {
                 this.invoicesDocField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public RequestedDocCancelledInvoicesDoc cancelledInvoicesDoc {
+            get {
+                return this.cancelledInvoicesDocField;
+            }
+            set {
+                this.cancelledInvoicesDocField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public RequestedDocIncomeClassificationsDoc incomeClassificationsDoc {
+            get {
+                return this.incomeClassificationsDocField;
+            }
+            set {
+                this.incomeClassificationsDocField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public RequestedDocExpensesClassificationDoc expensesClassificationDoc {
+            get {
+                return this.expensesClassificationDocField;
+            }
+            set {
+                this.expensesClassificationDocField = value;
             }
         }
     }
@@ -2988,7 +3780,7 @@ namespace myData.Client.Schema {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.aade.gr/myDATA/invoice/v1.0")]
-    public partial class RequestedInvoicesDocInvoicesDoc {
+    public partial class RequestedDocInvoicesDoc {
         
         private AadeBookInvoiceType[] invoiceField;
         
@@ -3000,6 +3792,118 @@ namespace myData.Client.Schema {
             }
             set {
                 this.invoiceField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.aade.gr/myDATA/invoice/v1.0")]
+    public partial class RequestedDocCancelledInvoicesDoc {
+        
+        private CancelledInvoiceType[] cancelledinvoiceField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("cancelledinvoice")]
+        public CancelledInvoiceType[] cancelledinvoice {
+            get {
+                return this.cancelledinvoiceField;
+            }
+            set {
+                this.cancelledinvoiceField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.aade.gr/myDATA/invoice/v1.0")]
+    public partial class CancelledInvoiceType {
+        
+        private long invoiceMarkField;
+        
+        private long cancellationMarkField;
+        
+        private System.DateTime cancellationDateField;
+        
+        /// <remarks/>
+        public long invoiceMark {
+            get {
+                return this.invoiceMarkField;
+            }
+            set {
+                this.invoiceMarkField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public long cancellationMark {
+            get {
+                return this.cancellationMarkField;
+            }
+            set {
+                this.cancellationMarkField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime cancellationDate {
+            get {
+                return this.cancellationDateField;
+            }
+            set {
+                this.cancellationDateField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.aade.gr/myDATA/invoice/v1.0")]
+    public partial class RequestedDocIncomeClassificationsDoc {
+        
+        private InvoiceIncomeClassificationType[] incomeInvoiceClassificationField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("incomeInvoiceClassification")]
+        public InvoiceIncomeClassificationType[] incomeInvoiceClassification {
+            get {
+                return this.incomeInvoiceClassificationField;
+            }
+            set {
+                this.incomeInvoiceClassificationField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.aade.gr/myDATA/invoice/v1.0")]
+    public partial class RequestedDocExpensesClassificationDoc {
+        
+        private InvoiceExpensesClassificationType[] expensesInvoiceClassificationField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("expensesInvoiceClassification")]
+        public InvoiceExpensesClassificationType[] expensesInvoiceClassification {
+            get {
+                return this.expensesInvoiceClassificationField;
+            }
+            set {
+                this.expensesInvoiceClassificationField = value;
             }
         }
     }
@@ -3034,19 +3938,21 @@ namespace myData.Client.Schema {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ResponseType {
         
-        private int entitylineNumberField;
+        private int indexField;
         
         private string statusCodeField;
         
         private object[] itemsField;
         
+        private ItemsChoiceType[] itemsElementNameField;
+        
         /// <remarks/>
-        public int entitylineNumber {
+        public int index {
             get {
-                return this.entitylineNumberField;
+                return this.indexField;
             }
             set {
-                this.entitylineNumberField = value;
+                this.indexField = value;
             }
         }
         
@@ -3061,15 +3967,29 @@ namespace myData.Client.Schema {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("entityMark", typeof(long))]
-        [System.Xml.Serialization.XmlElementAttribute("entityUid", typeof(string))]
+        [System.Xml.Serialization.XmlElementAttribute("classificationMark", typeof(long))]
         [System.Xml.Serialization.XmlElementAttribute("errors", typeof(ResponseTypeErrors))]
+        [System.Xml.Serialization.XmlElementAttribute("invoiceMark", typeof(long))]
+        [System.Xml.Serialization.XmlElementAttribute("invoiceUid", typeof(string))]
+        [System.Xml.Serialization.XmlChoiceIdentifierAttribute("ItemsElementName")]
         public object[] Items {
             get {
                 return this.itemsField;
             }
             set {
                 this.itemsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("ItemsElementName")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public ItemsChoiceType[] ItemsElementName {
+            get {
+                return this.itemsElementNameField;
+            }
+            set {
+                this.itemsElementNameField = value;
             }
         }
     }
@@ -3126,5 +4046,24 @@ namespace myData.Client.Schema {
                 this.codeField = value;
             }
         }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(IncludeInSchema=false)]
+    public enum ItemsChoiceType {
+        
+        /// <remarks/>
+        classificationMark,
+        
+        /// <remarks/>
+        errors,
+        
+        /// <remarks/>
+        invoiceMark,
+        
+        /// <remarks/>
+        invoiceUid,
     }
 }

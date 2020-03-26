@@ -29,11 +29,11 @@ namespace myData.ConsoleTest.net45
                     invoiceHeader = new InvoiceHeaderType
                     {
                         series = "SERIES 1",
-                        aa = 1111,
+                        aa = "1111",
                         issueDate = DateTime.Now,
                         invoiceType = InvoiceType.Item111 , // ΑΛΠ
                         currency = CurrencyType.EUR,
-                        currencySpecified = true
+                        currencySpecified = true,
                     },
                     invoiceDetails = new InvoiceRowType[]
                     {
@@ -41,14 +41,16 @@ namespace myData.ConsoleTest.net45
                         {
                             lineNumber = 1,
                             netValue = 5,
+                            vatAmount = 5 * 0.24m,
                             vatCategory = 1 // 24%
+
                         },
                         new InvoiceRowType
                         {
                             lineNumber = 2,
                             netValue = 10,
+                            vatAmount = 10 * 0.13m,
                             vatCategory = 2 // 13%
-                            
                         }
                     },
                     invoiceSummary = new InvoiceSummaryType
@@ -60,13 +62,14 @@ namespace myData.ConsoleTest.net45
                     issuer = new PartyType
                     {
                         vatNumber = "123456789",
-                        country = CountryType.GR,
-                        address = new AddressType
+                        country = CountryType.GR
+                    },
+                    paymentMethods = new PaymentMethodDetailType[]
+                    {
+                        new PaymentMethodDetailType
                         {
-                            street = "str",
-                            city = "test",
-                            number = "33",
-                            postalCode = "33445"
+                            amount = 15 + (5 * 0.24m + 10 * 0.13m),
+                            type = 1,
                         }
                     }
                 }
@@ -75,24 +78,43 @@ namespace myData.ConsoleTest.net45
             try
             {
                 Console.WriteLine("SendInvoices ...");
-                var response = await client.SendInvoicesAsync(invoicesDoc);
-                foreach (var r in response.response)
+                Console.WriteLine();
+                var responseDoc = await client.SendInvoicesAsync(invoicesDoc);
+                long? markToGet = null;
+                foreach (var response in responseDoc.response)
                 {
-                    Console.WriteLine($"{r.entitylineNumber}: status {r.statusCode}, data: {string.Join(" ",r.Items.Select(x=> x.ToString()))}");
-                }
-
-
-                Console.WriteLine("RequestInvoices ...");
-                var response2 = await client.RequestInvoicesAsync("0");
-                if (response2.invoicesDoc.invoice == null)
-                {
-                    Console.WriteLine("No invoice found");
-                }
-                else
-                {
-                    foreach (var invoice in response2.invoicesDoc.invoice)
+                    if (response.HasErrors())
                     {
-                        Console.WriteLine($"Invoice: {invoice.mark}");
+                        var errors = response.GetErrors();
+                        foreach (var error in errors)
+                        {
+                            Console.WriteLine($"{response.index}: status {response.statusCode}, error code {error.code}, error message: {error.message}");
+                            Console.WriteLine();
+                        }
+                    }
+                    else
+                    {
+                        markToGet = response.GetInvoiceMark();
+                        Console.WriteLine($"{response.index}: status {response.statusCode}, Invoice Mark: {response.GetInvoiceMark()}, InvoiceUid: {response.GetInvoiceUid()}");
+                        Console.WriteLine();
+                    }
+                }
+
+                if (markToGet != null)
+                {
+                    Console.WriteLine("RequestInvoices ...");
+                    Console.WriteLine();
+                    var requestedDoc = await client.RequestTransmittedDocsAsync(markToGet.Value - 1);
+                    if (requestedDoc.invoicesDoc?.invoice == null)
+                    {
+                        Console.WriteLine("No invoice found");
+                    }
+                    else
+                    {
+                        foreach (var invoice in requestedDoc.invoicesDoc.invoice)
+                        {
+                            Console.WriteLine($"Invoice: {invoice.mark}");
+                        }
                     }
                 }
 
